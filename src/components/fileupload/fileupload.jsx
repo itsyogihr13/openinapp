@@ -1,37 +1,103 @@
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/uploadinglogo.svg";
 import profile from "../../assets/profile.svg";
-import { useState } from "react";
 import MockDataTable from "./uploadFiles";
 
 export const FileUpload = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState("");
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (file) {
+      setIsLoading(true);
+    } else {
+      alert("Please choose the file ..");
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setFile("");
+
+    setIsLoading(false);
+  };
   return (
-    <div className="flex h-full bg-gray-100">
-      <div className="w-1/6 bg-[#fff]  pl-16 ">
-        <img src={logo} alt="" className=" pt-12" />
-        <ul className="text-left mt-14">
-          <li className="mb-6">Dashboard</li>
-          <li className="mb-6">Upload</li>
-          <li className="mb-6">Invoice</li>
-          <li className="mb-6">Schedule</li>
-          <li className="mb-6">Calendar</li>
-          <li className="mb-6">Notification</li>
-          <li>Settings</li>
+    <div className="flex flex-col md:flex-row h-full bg-gray-100">
+      <div className="w-full md:w-1/6 bg-[#fff] p-4 md:pl-8">
+        <img
+          onClick={() => navigate("/")}
+          src={logo}
+          alt=""
+          className="pt-4 cursor-pointer"
+        />
+        <ul className="text-left mt-6 md:mt-12">
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/dashboard" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/dashboard">Dashboard</Link>
+          </li>
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/upload" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/upload">Upload</Link>
+          </li>
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/invoice" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/invoice">Invoice</Link>
+          </li>
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/schedule" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/schedule">Schedule</Link>
+          </li>
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/calendar" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/calendar">Calendar</Link>
+          </li>
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/notification" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/notification">Notification</Link>
+          </li>
+          <li
+            className={`mb-4 md:mb-6 ${
+              location.pathname === "/settings" ? "text-[#605BFF]" : ""
+            }`}
+          >
+            <Link to="/settings">Settings</Link>
+          </li>
         </ul>
       </div>
 
-      <div className="w-4/5 p-8 h-auto">
+      {/* Main Content */}
+      <div className="w-full md:w-5/6 p-4 md:p-8">
         <div className="header-small flex justify-between w-full">
           <p>Upload CSV</p>
           <img src={profile} alt="" />
         </div>
-        <div className="m-auto mt-16  bg-[#fff] w-[50%] h-[300px] p-2">
+        <div className="m-auto mt-8 md:mt-16 bg-[#fff] w-full md:w-[50%] h-[300px] p-2">
           <div className="border-dashed border-2 border-gray-400 bg-white p-8 rounded-md h-full">
-            <p className="text-gray-500 mb-4 mt-14">
+            <p className="text-gray-500 mb-4 md:mt-14">
               Drag and drop your Excel sheet here or
             </p>
             <p className="py-4">{file && file.name}</p>
@@ -50,10 +116,23 @@ export const FileUpload = () => {
             />
           </div>
           <button
-            onClick={() => document.getElementById("fileInput").click()}
-            className="bg-[#605BFF] text-white mt-3 px-4 py-2 rounded-md w-full text-center"
+            onClick={handleSubmit}
+            type="submit"
+            className={`bg-[#605BFF] text-white px-4 py-2 rounded-md w-full text-center relative ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isLoading}
           >
-            Upload
+            {isLoading ? (
+              <>
+                <span>Uploading ...</span>
+                <div className="absolute top-1/2 right-3 transform -translate-y-1/2">
+                  <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
+                </div>
+              </>
+            ) : (
+              "Upload"
+            )}
           </button>
         </div>
         <MockDataTable />

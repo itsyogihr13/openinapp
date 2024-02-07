@@ -144,25 +144,25 @@ const MockDataTable = () => {
   };
 
   return (
-    <div className="overflow-x-auto mt-[150px]">
-      <table className="min-w-full bg-white border border-gray-300 shadow-md">
+    <div className="overflow-x-auto mt-[150px] p-4 bg-gray-200">
+      <table className="min-w-full bg-white ">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="py-2 px-4 border-b">S.no</th>
-            <th className="py-2 px-4 border-b">Link</th>
-            <th className="py-2 px-4 border-b">Prefix</th>
-            <th className="py-2 px-4 border-b">Tags</th>
-            <th className="py-2 px-4 border-b">Selected Tags</th>
+          <tr className="bg-gray-200 border-none">
+            <th className="py-2 px-4 ">S.no</th>
+            <th className="py-2 px-4 ">Link</th>
+            <th className="py-2 px-4 ">Prefix</th>
+            <th className="py-2 px-4 ">Tags</th>
+            <th className="py-2 px-4 ">Selected Tags</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item, index) => (
-            <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
-              <td className="py-2 px-4 border-b">{item.id}</td>
-              <td className="py-2 px-4 border-b">{item.link}</td>
-              <td className="py-2 px-4 border-b">{item.prefix}</td>
-              <td className="py-2 px-4 border-b">{item.tags}</td>
-              <td className="py-2 px-4 border-b">
+            <tr className="rounded-md border-dashed" key={index}>
+              <td className="py-2 px-4   ">{item.id}</td>
+              <td className="py-2 px-4 ">{item.link}</td>
+              <td className="py-2 px-4 ">{item.prefix}</td>
+              <td className="py-2 px-4 ">{item.tags}</td>
+              <td className="py-2 px-4 ">
                 <input
                   type="text"
                   value={
@@ -171,7 +171,7 @@ const MockDataTable = () => {
                       : ""
                   }
                   onChange={(e) => handleTagSelect(item.id, e.target.value)}
-                  className="w-full px-2 py-1 border rounded focus:outline-none focus:border-blue-500"
+                  className="w-full px-2 py-1 border rounded focus:outline-none focus:lue-500"
                   placeholder="Enter tags"
                 />
               </td>
