@@ -53,6 +53,8 @@ export const Home = () => {
       if (registeredUser && registeredUser.password === formData.password) {
         alert("User login Successfully");
         navigate("/fileupload");
+      } else if (!registeredUser) {
+        alert("Please registered your self. Click on register");
       } else {
         alert("Invalid email or password");
       }
