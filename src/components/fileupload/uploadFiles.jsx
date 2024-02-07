@@ -2,10 +2,45 @@ import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 
 const MockDataTable = () => {
-  const itemsPerPage = 5; // Number of items to display per page
+  const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedTags, setSelectedTags] = useState({});
+  const [selectedTagsTable, setSelectedTagsTable] = useState([]);
 
+  const handleTagSelect = (id, selectedTag) => {
+    const updatedTags = selectedTags[id] || [];
+    updatedTags.push(selectedTag);
+
+    setSelectedTags((prevTags) => ({
+      ...prevTags,
+      [id]: updatedTags,
+    }));
+
+    updateSelectedTagsTable();
+  };
+
+  const handleTagDelete = (id, tagToDelete) => {
+    const updatedTags = (selectedTags[id] || []).filter(
+      (tag) => tag !== tagToDelete
+    );
+
+    setSelectedTags((prevTags) => ({
+      ...prevTags,
+      [id]: updatedTags,
+    }));
+
+    updateSelectedTagsTable();
+  };
+
+  const updateSelectedTagsTable = () => {
+    const tagsTable = [];
+    for (const [id, tags] of Object.entries(selectedTags)) {
+      tags.forEach((tag) => {
+        tagsTable.push({ id, tag });
+      });
+    }
+    setSelectedTagsTable(tagsTable);
+  };
   const mockData = [
     {
       id: 1,
@@ -136,64 +171,79 @@ const MockDataTable = () => {
     setCurrentPage(selected);
   };
 
-  const handleTagSelect = (id, tags) => {
-    setSelectedTags((prevTags) => ({
-      ...prevTags,
-      [id]: tags.split(",").map((tag) => tag.trim()),
-    }));
-  };
-
   return (
-    <div className="overflow-x-auto mt-[150px] p-4 bg-gray-200">
-      <table className="min-w-full bg-white ">
-        <thead>
-          <tr className="bg-gray-200 border-none">
-            <th className="py-2 px-4 ">S.no</th>
-            <th className="py-2 px-4 ">Link</th>
-            <th className="py-2 px-4 ">Prefix</th>
-            <th className="py-2 px-4 ">Tags</th>
-            <th className="py-2 px-4 ">Selected Tags</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.map((item, index) => (
-            <tr className="rounded-md border-dashed" key={index}>
-              <td className="py-2 px-4   ">{item.id}</td>
-              <td className="py-2 px-4 ">{item.link}</td>
-              <td className="py-2 px-4 ">{item.prefix}</td>
-              <td className="py-2 px-4 ">{item.tags}</td>
-              <td className="py-2 px-4 ">
-                <input
-                  type="text"
-                  value={
-                    selectedTags[item.id]
-                      ? selectedTags[item.id].join(", ")
-                      : ""
-                  }
-                  onChange={(e) => handleTagSelect(item.id, e.target.value)}
-                  className="w-full px-2 py-1 border rounded focus:outline-none focus:lue-500"
-                  placeholder="Enter tags"
-                />
-              </td>
+    <>
+      <h1>Uploads</h1>
+      <div className="overflow-x-auto mt-[150px] p-4 bg-[#fff] rounded-md">
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr className="bg-gray-200 border-none">
+              <th className="py-2 px-4 ">S.no</th>
+              <th className="py-2 px-4 ">Link</th>
+              <th className="py-2 px-4 ">Prefix</th>
+              <th className="py-2 px-4 ">Tags</th>
+              <th className="py-2 px-4 ">Selected Tags</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {currentData.map((item, index) => (
+              <tr className="rounded-md border-dashed" key={index}>
+                <td className="py-2 px-4   ">{item.id}</td>
+                <td className="py-2 px-4 text-[#346BD4]  cursor-pointer ">
+                  {item.link}
+                </td>
+                <td className="py-2 px-4 ">{item.prefix}</td>
 
-      {/* Pagination */}
-      <ReactPaginate
-        previousLabel="Previous"
-        nextLabel="Next"
-        pageCount={Math.ceil(mockData.length / itemsPerPage)}
-        onPageChange={handlePageClick}
-        containerClassName="pagination flex justify-end mt-4"
-        pageClassName="mx-1 px-3 py-2 border rounded cursor-pointer"
-        activeClassName="bg-blue-500 text-white"
-        previousClassName="mx-1 px-3 py-2 border rounded cursor-pointer"
-        nextClassName="mx-1 px-3 py-2 border rounded cursor-pointer"
-        disabledClassName="opacity-50"
-      />
-    </div>
+                <td className="py-2 px-4 ">
+                  <div className="relative">
+                    <select
+                      value={selectedTags[item.id] ? selectedTags[item.id] : ""}
+                      onChange={(e) => handleTagSelect(item.id, e.target.value)}
+                      className="w-full px-2 py-1 border rounded focus:outline-none focus:lue-500"
+                    >
+                      <option value="">Select Tag</option>
+                      {item.tags.split(", ").map((tag, tagIndex) => (
+                        <option key={tagIndex} value={tag.trim()}>
+                          {tag.trim()}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <div className="mt-2">
+                    {selectedTags[item.id] &&
+                      selectedTags[item.id].map((tag, tagIndex) => (
+                        <span key={tagIndex} className="mr-2">
+                          {tag}
+                          <button
+                            onClick={() => handleTagDelete(item.id, tag)}
+                            className="text-red-500 hover:text-red-700 focus:outline-none ml-1"
+                          >
+                            &#10006;
+                          </button>
+                        </span>
+                      ))}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <ReactPaginate
+          previousLabel="Previous"
+          nextLabel="Next"
+          pageCount={Math.ceil(mockData.length / itemsPerPage)}
+          onPageChange={handlePageClick}
+          containerClassName="pagination flex justify-end mt-4"
+          pageClassName="mx-1 px-3 py-2 border rounded cursor-pointer"
+          activeClassName="bg-blue-500 text-white"
+          previousClassName="mx-1 px-3 py-2 border rounded cursor-pointer"
+          nextClassName="mx-1 px-3 py-2 border rounded cursor-pointer"
+          disabledClassName="opacity-50"
+        />
+      </div>
+    </>
   );
 };
 

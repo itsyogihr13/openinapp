@@ -59,7 +59,7 @@ export const Home = () => {
     }
   };
   return (
-    <div className="container flex w-full justify-between h-[750px] absolute">
+    <div className="container flex w-full justify-between h-[750px] absolute ">
       <div className="logo-container w-[50%] h-auto bg-[#605BFF]">
         <img className="p-[40px]" src={logo} alt="" />
         <h1 className=" font-bold text-7xl	text-[#FFFFFF] relative top-[170px] ">

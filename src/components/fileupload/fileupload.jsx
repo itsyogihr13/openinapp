@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/uploadinglogo.svg";
 import profile from "../../assets/profile.svg";
 import MockDataTable from "./uploadFiles";
+import { SampleFiles } from "./sampleFiles";
 
 export const FileUpload = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export const FileUpload = () => {
               location.pathname === "/upload" ? "text-[#605BFF]" : ""
             }`}
           >
-            <Link to="/upload">Upload</Link>
+            <Link to="/fileupload">Upload</Link>
           </li>
           <li
             className={`mb-4 md:mb-6 ${
@@ -89,7 +90,6 @@ export const FileUpload = () => {
         </ul>
       </div>
 
-      {/* Main Content */}
       <div className="w-full md:w-5/6 p-4 md:p-8">
         <div className="header-small flex justify-between w-full">
           <p>Upload CSV</p>
