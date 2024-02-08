@@ -1,11 +1,11 @@
 import advertisement from "../../assets/advertise.svg";
 import logo from "../../assets/logo.svg";
-import { useSelector } from "react-redux";
 import appleLogo from "../../assets/apple.svg";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { GoogleLogin } from "@react-oauth/google";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ export const Home = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -37,9 +38,11 @@ export const Home = () => {
 
     return Object.keys(newErrors).length === 0;
   };
+
   const handlePassword = () => {
     setShow((prev) => !prev);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -54,35 +57,35 @@ export const Home = () => {
         alert("User login Successfully");
         navigate("/fileupload");
       } else if (!registeredUser) {
-        alert("Please registered your self. Click on register");
+        alert("Please register yourself. Click on register");
       } else {
         alert("Invalid email or password");
       }
     }
   };
+
   return (
-    <div className="container flex w-full justify-between h-[750px] absolute ">
-      <div className="logo-container w-[50%] h-auto bg-[#605BFF]">
-        <img className="p-[40px]" src={logo} alt="" />
-        <h1 className=" font-bold text-7xl	text-[#FFFFFF] relative top-[170px] ">
+    <div className="container flex flex-col lg:flex-row w-full h-screen">
+      <div className="logo-container lg:w-1/2 bg-[#605BFF] p-4 lg:p-8">
+        <img className="p-4 lg:p-8" src={logo} alt="" />
+        <h1
+          className={`font-bold text-4xl lg:text-7xl text-white ${
+            window.innerWidth > 768 ? "mt-4 lg:mt-[260px]" : "mt-0"
+          }`}
+        >
           BASE
         </h1>
-        <img
-          className="relative top-[400px] flex  m-auto "
-          src={advertisement}
-          alt=""
-        />
+        <img className="mt-8 lg:mt-16 mx-auto" src={advertisement} alt="" />
       </div>
-
-      <div className="login-container bg-[#F8FAFF] w-[50%] justify-center items-center flex">
-        <div className=" w-[70%] h-[500px] text-left ">
-          <h1 className="text-[36px] leading-[43px] font-bold">Sign In</h1>
-          <h1 className="text-[16px] leading-[19px] font-normal mt-[20px]">
+      <div className="login-container bg-[#F8FAFF] lg:w-1/2 flex justify-center items-center p-8">
+        <div className="w-full lg:w-3/4 text-left">
+          <h1 className="text-3xl font-bold mb-4">Sign In</h1>
+          <h1 className="text-base font-normal mb-8">
             Sign in to your account
           </h1>
-          <div className="social-login-container sm:flex  mt-4 mb-8">
+          <div className="social-login-container flex mb-8">
             <GoogleLogin
-              className="google-login-button bg-[#fff] text-[#858585]   py-2 px-4 rounded flex items-center mb-4 sm:mr-4 sm:mb-0"
+              className="google-login-button bg-white text-gray-600 py-2 px-4 rounded flex items-center mb-4 mr-4"
               onSuccess={(credentialResponse) => {
                 console.log(credentialResponse);
               }}
@@ -91,18 +94,16 @@ export const Home = () => {
               }}
             />
 
-            <button className="apple-login-button bg-[#fff] text-[#858585] ml-6 py-2 px-4 rounded flex items-center">
+            <button className="apple-login-button bg-white text-gray-600 py-2 px-4 rounded flex items-center">
               <img src={appleLogo} alt="Apple Logo" className="logo mr-2" />
               Login with Apple
             </button>
           </div>
-          <div className="w-[85%]  max-w-md p-6 bg-white rounded-md ">
+
+          <div className="max-w-md p-6 bg-white rounded-md">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-base font-normal mt-2"
-                >
+                <label htmlFor="email" className="block text-base font-normal">
                   Email Address:
                 </label>
                 <input
@@ -148,15 +149,16 @@ export const Home = () => {
                 </div>
               </div>
 
-              <p className="text-[#346BD4] font-normal text-base mb-4">
-                Forgot Password ?
+              <p className="text-blue-500 font-normal text-base mb-4">
+                Forgot Password?
               </p>
+
               <button
                 type="submit"
                 className={`bg-[#605BFF] text-white px-4 py-2 rounded-md w-full text-center relative ${
                   isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
-                disabled={isLoading} // Disable the button when loading
+                disabled={isLoading}
               >
                 {isLoading ? (
                   <>
@@ -173,12 +175,10 @@ export const Home = () => {
           </div>
           <p
             onClick={() => navigate("/register")}
-            className="text-[#858585]  mt-4 mr-2"
+            className="text-gray-600 mt-4 mr-2"
           >
             Don’t have an account?
-            <span className="text-[#346BD4] px-2 underline ">
-              Register here
-            </span>
+            <span className="text-blue-500 px-2 underline">Register here</span>
           </p>
         </div>
       </div>

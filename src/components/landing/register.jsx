@@ -58,21 +58,21 @@ export const Register = () => {
     }
   };
   return (
-    <div className="container flex w-full justify-between h-[750px] absolute">
-      <div className="logo-container w-[50%] h-auto bg-[#605BFF]">
-        <img className="p-[40px]" src={logo} alt="" />
-        <h1 className=" font-bold text-7xl	text-[#FFFFFF] relative top-[170px] ">
+    <div className="container flex flex-col lg:flex-row w-full h-screen">
+      <div className="logo-container lg:w-1/2 bg-[#605BFF] p-8">
+        <img className="p-4 lg:p-8" src={logo} alt="" />
+        <h1
+          className={`font-bold text-4xl lg:text-7xl text-white ${
+            window.innerWidth > 768 ? "mt-4 lg:mt-[260px]" : "mt-0"
+          }`}
+        >
           BASE
         </h1>
-        <img
-          className="relative top-[400px] flex  m-auto "
-          src={advertisement}
-          alt=""
-        />
+        <img className="mt-8 lg:mt-16 mx-auto" src={advertisement} alt="" />
       </div>
 
-      <div className="login-container bg-[#F8FAFF] w-[50%] justify-center items-center flex">
-        <div className=" w-[70%] h-[500px] text-left ">
+      <div className="login-container bg-[#F8FAFF] lg:w-1/2 p-8 flex justify-center items-center">
+        <div className="w-full lg:w-3/4 text-left">
           <h1 className="text-[36px] leading-[43px] font-bold">Register</h1>
           <h1 className="text-[16px] leading-[19px] font-normal my-[20px]">
             Register your account
